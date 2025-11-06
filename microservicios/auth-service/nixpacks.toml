@@ -3,9 +3,7 @@ nixPkgs = ["maven", "jdk21"]
 
 [phases.build]
 cmds = [
-  "cd ..",
-  "mvn clean install -DskipTests",
-  "cd auth-service",
+  "mvn clean install -DskipTests -f ../pom.xml",
   "mvn clean package -DskipTests"
 ]
 

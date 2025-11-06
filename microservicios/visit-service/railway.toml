@@ -1,8 +1,0 @@
-[build]
-builder = "NIXPACKS"
-buildCommand = "mvn clean install -DskipTests && cd visit-service && mvn clean package -DskipTests"
-
-[deploy]
-startCommand = "java -Dserver.port=$PORT -jar visit-service/target/*.jar"
-restartPolicyType = "ON_FAILURE"
-restartPolicyMaxRetries = 10

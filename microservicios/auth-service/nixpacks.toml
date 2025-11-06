@@ -4,15 +4,10 @@ nixPkgs = ["maven", "jdk21"]
 [phases.build]
 cmds = [
   "mvn clean install -DskipTests",
-  "cd auth-service && mvn clean package -DskipTests"
-]
-
-[phases.install]
-dependsOn = ["build"]
-cmds = [
-  "mkdir -p /app/output",
-  "cp auth-service/target/*.jar /app/output/app.jar"
+  "cd auth-service && mvn clean package -DskipTests",
+  "mkdir -p target",
+  "cp auth-service/target/*.jar target/"
 ]
 
 [start]
-cmd = "java -Dserver.port=$PORT -jar /app/output/app.jar"
+cmd = "java -Dserver.port=$PORT -jar target/*.jar"

@@ -3,9 +3,16 @@ nixPkgs = ["maven", "jdk21"]
 
 [phases.build]
 cmds = [
-  "mvn clean install -DskipTests -f ../pom.xml",
-  "mvn clean package -DskipTests"
+  "mvn clean install -DskipTests",
+  "cd visit-service && mvn clean package -DskipTests"
+]
+
+[phases.install]
+dependsOn = ["build"]
+cmds = [
+  "mkdir -p /app/output",
+  "cp visit-service/target/*.jar /app/output/app.jar"
 ]
 
 [start]
-cmd = "java -Dserver.port=$PORT -jar target/*.jar"
+cmd = "java -Dserver.port=$PORT -jar /app/output/app.jar"

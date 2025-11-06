@@ -1,13 +1,9 @@
 [phases.setup]
 nixPkgs = ["maven", "jdk21"]
+aptPkgs = []
 
 [phases.build]
-cmds = [
-  "mvn clean install -DskipTests",
-  "cd auth-service && mvn clean package -DskipTests",
-  "mkdir -p target",
-  "cp auth-service/target/*.jar target/"
-]
+cmds = ["mvn clean package -DskipTests -f pom.railway.xml"]
 
 [start]
 cmd = "java -Dserver.port=$PORT -jar target/*.jar"

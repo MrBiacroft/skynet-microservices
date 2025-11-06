@@ -1,9 +1,0 @@
-[phases.setup]
-nixPkgs = ["maven", "jdk21"]
-aptPkgs = []
-
-[phases.build]
-cmds = ["mvn clean package -DskipTests -f pom.railway.xml"]
-
-[start]
-cmd = "java -Dserver.port=$PORT -jar target/*.jar"

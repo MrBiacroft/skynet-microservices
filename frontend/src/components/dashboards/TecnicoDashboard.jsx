@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Calendar, MapPin, Clock, CheckCircle, PlayCircle } from 'lucide-react'
 import axios from 'axios'
+import { API_URLS } from '../../config'
 
 function TecnicoDashboard() {
   const [visitasHoy, setVisitasHoy] = useState([])
@@ -13,7 +14,7 @@ function TecnicoDashboard() {
   const cargarVisitasHoy = async () => {
     try {
       // En una app real, obtendríamos el ID del técnico del contexto de auth
-      const response = await axios.get('http://localhost:8083/api/visitas/tecnicos/3/hoy')
+      const response = await axios.get(`${API_URLS.VISIT}/api/visitas/tecnicos/3/hoy`)
       setVisitasHoy(response.data)
     } catch (error) {
       console.error('Error cargando visitas:', error)
@@ -30,7 +31,7 @@ function TecnicoDashboard() {
         longitud: -90.5068 + (Math.random() - 0.5) * 0.01
       }
 
-      await axios.post(`http://localhost:8083/api/visitas/${visitaId}/registrar-ingreso`, coordenadas)
+      await axios.post(`${API_URLS.VISIT}/api/visitas/${visitaId}/registrar-ingreso`, coordenadas)
       cargarVisitasHoy() // Recargar datos
       alert('✅ Ingreso registrado correctamente')
     } catch (error) {

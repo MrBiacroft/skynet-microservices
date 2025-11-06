@@ -1,5 +1,6 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import axios from 'axios'
+import { API_URLS } from '../config'
 
 const AuthContext = createContext()
 
@@ -13,7 +14,7 @@ export function AuthProvider({ children }) {
 
   // Configurar axios base URL
   useEffect(() => {
-    axios.defaults.baseURL = 'http://localhost:8081'
+    axios.defaults.baseURL = API_URLS.AUTH
   }, [])
 
   const login = async (email, password) => {

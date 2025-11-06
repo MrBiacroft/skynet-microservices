@@ -1,6 +1,24 @@
 version: '3.8'
 
 services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15-alpine
+    container_name: skynet-postgres
+    environment:
+      POSTGRES_DB: skynet
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: skynet2024
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   # Auth Service
   auth-service:
     build:
@@ -8,6 +26,15 @@ services:
       dockerfile: auth-service/Dockerfile
     ports:
       - "8081:8081"
+    environment:
+      SPRING_PROFILE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/skynet
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: skynet2024
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
   # Client Service  
   client-service:
@@ -16,6 +43,15 @@ services:
       dockerfile: client-service/Dockerfile
     ports:
       - "8082:8082"
+    environment:
+      SPRING_PROFILE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/skynet
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: skynet2024
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
   # Visit Service
   visit-service:
@@ -24,6 +60,15 @@ services:
       dockerfile: visit-service/Dockerfile
     ports:
       - "8083:8083"
+    environment:
+      SPRING_PROFILE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/skynet
+      DATABASE_USER: postgres
+      DATABASE_PASSWORD: skynet2024
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
 
   # Frontend
   frontend:
@@ -34,3 +79,7 @@ services:
       - auth-service
       - client-service
       - visit-service
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

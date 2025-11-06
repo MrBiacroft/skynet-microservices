@@ -8,4 +8,4 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 COPY --from=build /build/target/auth-service-1.0.0.jar app.jar
 EXPOSE 8081
-ENTRYPOINT ["java", "-Dserver.port=${PORT:-8081}", "-jar", "app.jar"]
+CMD java -jar app.jar

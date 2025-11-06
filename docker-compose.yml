@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  # Auth Service
+  auth-service:
+    build:
+      context: ./microservicios
+      dockerfile: auth-service/Dockerfile
+    ports:
+      - "8081:8081"
+
+  # Client Service  
+  client-service:
+    build:
+      context: ./microservicios
+      dockerfile: client-service/Dockerfile
+    ports:
+      - "8082:8082"
+
+  # Visit Service
+  visit-service:
+    build:
+      context: ./microservicios
+      dockerfile: visit-service/Dockerfile
+    ports:
+      - "8083:8083"
+
+  # Frontend
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - auth-service
+      - client-service
+      - visit-service

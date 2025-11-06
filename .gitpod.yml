@@ -1,0 +1,29 @@
+image: gitpod/workspace-full
+
+tasks:
+  - name: Setup Backend
+    init: |
+      cd /workspace/skynet-microservices
+      java -version
+      echo "Configurando backend..."
+    command: |
+      echo "Backend listo en puerto 8080"
+
+  - name: Setup Frontend
+    init: |
+      cd /workspace/skynet-microservices/frontend
+      node --version
+      npm --version
+      echo "Configurando frontend..."
+    command: |
+      echo "Frontend listo en puerto 3000"
+
+ports:
+  - port: 8080
+    description: Backend API
+    onOpen: open-preview
+  - port: 3000
+    description: Frontend React
+    onOpen: open-preview
+  - port: 5432
+    description: PostgreSQL Database

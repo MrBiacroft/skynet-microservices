@@ -8,6 +8,8 @@ Sistema completo de gestión de visitas técnicas con arquitectura de microservi
 - 👥 **Gestión de Clientes** - CRUD completo con geolocalización
 - 📅 **Gestión de Visitas** - Planificación, seguimiento y reportes
 - 📍 **Geolocalización** - Check-in/out con GPS
+- 📄 **Reportes PDF** - Generación automática de reportes de visitas (v1.1)
+- 📧 **Notificaciones Email** - Envío automático al completar visitas (v1.1)
 - 🎨 **Dashboards** - Interfaces específicas por rol
 - 🐳 **Docker** - Containerización completa
 - 🗄️ **PostgreSQL** - Base de datos persistente
@@ -128,7 +130,28 @@ cd frontend && npm install && npm run dev
 - Búsqueda
 
 ### Visit Service (8083)
-Gestión de visitas técnicas y seguimiento.
+- Gestión de visitas técnicas
+- Check-in/out con geolocalización
+- Reportes de visitas
+- **Generación de PDF** (v1.1)
+- **Notificaciones por email** (v1.1)
+
+## 📝 Changelog
+
+### v1.1-complete (2025-11-07)
+- ✅ Generación de reportes PDF con iText7
+- ✅ Notificaciones automáticas por email al completar visitas
+- ✅ Botón de descarga de PDF en dashboard del técnico
+- ✅ Email incluye PDF adjunto (simulado en desarrollo)
+- ✅ Endpoint: `GET /api/visitas/{id}/reporte-pdf`
+
+### v1.0-stable (2025-11-06)
+- ✅ Sistema completo de autenticación con JWT
+- ✅ Gestión de clientes con geolocalización
+- ✅ Gestión de visitas técnicas
+- ✅ Dashboards por rol (Admin, Supervisor, Técnico)
+- ✅ Despliegue en Railway
+- ✅ Base de datos PostgreSQL
 
 ### Desarrollo
 

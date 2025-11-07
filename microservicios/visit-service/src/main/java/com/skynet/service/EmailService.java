@@ -1,22 +1,30 @@
 package com.skynet.service;
 
 import com.skynet.model.Visita;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class EmailService {
     
+    @Autowired
+    private PdfService pdfService;
+    
     public void enviarReporteVisita(Visita visita) {
         // En desarrollo, solo imprimimos el email en consola
-        // En producción, se integraría con un servicio de email real
+        // En producción, se integraría con un servicio de email real (JavaMailSender)
         
         String asunto = "📋 Reporte de Visita Técnica - SkyNet S.A.";
         String contenido = generarContenidoEmail(visita);
+        
+        // Generar PDF para adjuntar
+        byte[] pdfBytes = pdfService.generarReporteVisita(visita);
         
         System.out.println("═══════════════════════════════════════");
         System.out.println("📧 EMAIL ENVIADO (Simulación):");
         System.out.println("Para: " + visita.getClienteEmail());
         System.out.println("Asunto: " + asunto);
+        System.out.println("Adjunto: reporte-visita-" + visita.getId() + ".pdf (" + pdfBytes.length + " bytes)");
         System.out.println("Contenido:");
         System.out.println(contenido);
         System.out.println("═══════════════════════════════════════");

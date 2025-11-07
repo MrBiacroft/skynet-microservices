@@ -2,7 +2,10 @@ package com.skynet.controller;
 
 import com.skynet.model.Visita;
 import com.skynet.service.VisitaService;
+import com.skynet.service.PdfService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,6 +20,9 @@ public class VisitaController {
     
     @Autowired
     private VisitaService visitaService;
+    
+    @Autowired
+    private PdfService pdfService;
     
     @GetMapping
     public List<Visita> obtenerTodasVisitas() {
@@ -104,5 +110,26 @@ public class VisitaController {
     @GetMapping("/hoy")
     public List<Visita> obtenerVisitasPlanificadasHoy() {
         return visitaService.obtenerVisitasPlanificadasHoy();
+    }
+    
+    @GetMapping("/{id}/reporte-pdf")
+    public ResponseEntity<byte[]> generarReportePdf(@PathVariable Long id) {
+        Optional<Visita> visitaOpt = visitaService.obtenerVisitaPorId(id);
+        
+        if (!visitaOpt.isPresent()) {
+            return ResponseEntity.notFound().build();
+        }
+        
+        Visita visita = visitaOpt.get();
+        byte[] pdfBytes = pdfService.generarReporteVisita(visita);
+        
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_PDF);
+        headers.setContentDispositionFormData("attachment", "reporte-visita-" + id + ".pdf");
+        headers.setContentLength(pdfBytes.length);
+        
+        return ResponseEntity.ok()
+                .headers(headers)
+                .body(pdfBytes);
     }
 }

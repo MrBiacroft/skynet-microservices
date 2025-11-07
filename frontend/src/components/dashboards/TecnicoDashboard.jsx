@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { Calendar, MapPin, Clock, CheckCircle, PlayCircle } from 'lucide-react'
+import { Calendar, MapPin, Clock, CheckCircle, PlayCircle, FileText } from 'lucide-react'
 import axios from 'axios'
 import { API_URLS } from '../../config'
 
@@ -36,6 +36,29 @@ function TecnicoDashboard() {
       alert('✅ Ingreso registrado correctamente')
     } catch (error) {
       alert('❌ Error registrando ingreso')
+    }
+  }
+
+  const descargarReportePDF = async (visitaId) => {
+    try {
+      const response = await axios.get(`${API_URLS.VISIT}/api/visitas/${visitaId}/reporte-pdf`, {
+        responseType: 'blob'
+      })
+      
+      // Crear un enlace temporal para descargar el archivo
+      const url = window.URL.createObjectURL(new Blob([response.data]))
+      const link = document.createElement('a')
+      link.href = url
+      link.setAttribute('download', `reporte-visita-${visitaId}.pdf`)
+      document.body.appendChild(link)
+      link.click()
+      link.remove()
+      window.URL.revokeObjectURL(url)
+      
+      alert('✅ Reporte PDF descargado correctamente')
+    } catch (error) {
+      console.error('Error descargando PDF:', error)
+      alert('❌ Error descargando el reporte PDF')
     }
   }
 
@@ -168,6 +191,16 @@ function TecnicoDashboard() {
                       >
                         <CheckCircle className="h-4 w-4" />
                         <span>Completar</span>
+                      </button>
+                    )}
+
+                    {visita.estado === 'COMPLETADA' && (
+                      <button
+                        onClick={() => descargarReportePDF(visita.id)}
+                        className="flex items-center space-x-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition-colors"
+                      >
+                        <FileText className="h-4 w-4" />
+                        <span>Descargar PDF</span>
                       </button>
                     )}
 

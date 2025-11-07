@@ -1,7 +1,11 @@
 FROM node:18-alpine AS build
 WORKDIR /app
+
+# Install dependencies first (better caching)
 COPY package*.json ./
-RUN npm install
+RUN npm ci --only=production=false
+
+# Copy source code
 COPY . .
 
 # Build arguments for API URLs
@@ -14,6 +18,7 @@ ENV VITE_API_AUTH_URL=$VITE_API_AUTH_URL
 ENV VITE_API_CLIENT_URL=$VITE_API_CLIENT_URL
 ENV VITE_API_VISIT_URL=$VITE_API_VISIT_URL
 
+# Build the application
 RUN npm run build
 
 FROM nginx:alpine

@@ -285,5 +285,4 @@ curl -X POST https://visit.up.railway.app/api/visitas/{ID}/registrar-egreso \
 
 **Fecha**: 2025-11-08  
 **Versión**: v1.1-complete  
-**Estado**: ✅ SISTEMA OPERATIVO Y FUNCIONAL  
-**Desarrollado por**: Ona AI Assistant
+**Estado**: ✅ SISTEMA OPERATIVO Y FUNCIONAL
